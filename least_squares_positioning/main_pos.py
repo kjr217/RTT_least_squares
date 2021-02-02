@@ -52,7 +52,7 @@ def main(file_path):
     # calculate distances
     data_store.determine_distances()
 
-    for n, file in file_path:
+    for n, file in enumerate(file_path):
         data_store.aps[n].df, data_store.aps[n].data_list, data_store.aps[n].data_list_df = \
             dataframe_maker(file, ap_params[n][0])
 
