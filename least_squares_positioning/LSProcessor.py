@@ -33,10 +33,10 @@ class DeviceHolder:
         self.data_list_df = "uninitialised"
 
 
-class DataStore:
+class LSProcessor:
     """
     :title:
-    Storage container for all data pertaining to one trial run (i.e. one session of positioning)
+    Runs all processing for this specific least squares algorithm
 
     :attr:
     self.aps - list of aps needs to be consist of lists with: [AP name, x, y]
@@ -46,7 +46,18 @@ class DataStore:
     :methods:
     determine_distances - calculates the distance between the mobile device and the APs, then sets this to
     the device holder ls_per_epoch - runs least squares over a single epoch - returns the x_plus value
-    ls_over_df_length - finds the shortest df (pseudo_range_data) and runs ls_per_epoch over each iteration,
+
+    ls_over_df_length_2d - finds the shortest dataframe height (pseudo_range_data) and runs ls_per_epoch_2d over each
+    iteration, designed for 2d variations
+
+    ls_over_df_length_3d - finds the shortest dataframe height (pseudo_range_data) and runs ls_per_epoch_3d over each
+    iteration, designed for 3d variations
+
+    ls_per_epoch_2d - performs least squares on a specified epoch and returns the expected position of the device,
+    designed for 2d
+
+    ls_per_epoch_3d - performs least squares on a specified epoch and returns the expected position of the device,
+    designed for 3d
 
     """
 
@@ -88,7 +99,6 @@ class DataStore:
                   "\ny: " + str(coords[1]) +
                   "\nz: " + str(coords[2]))
 
-    # X = (AtA)-1Atb
     def ls_per_epoch_2d(self, pseudo_range_index):
         self.determine_distances()
         a = np.array([0, 0])
@@ -119,7 +129,6 @@ class DataStore:
 
         return x_plus
 
-    # X = (AtA)-1Atb
     def ls_per_epoch_3d(self, pseudo_range_index):
         self.determine_distances()
         a = np.array([0, 0, 0])

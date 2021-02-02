@@ -3,7 +3,7 @@ import numpy as np
 import glob
 import matplotlib.pyplot as plt
 import seaborn as sns
-from least_squares_positioning.data_store import DataStore
+from least_squares_positioning.LSProcessor import LSProcessor
 
 
 def main(file_path):
@@ -48,7 +48,7 @@ def main(file_path):
     device = ["device", 5150, 8220, 850]
 
     # declare datastore object
-    data_store = DataStore(name, ap_params, device)
+    data_store = LSProcessor(name, ap_params, device)
     # calculate distances
     data_store.determine_distances()
 
