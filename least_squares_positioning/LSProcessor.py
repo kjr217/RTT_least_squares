@@ -112,8 +112,8 @@ class LSProcessor:
             a_line = np.array([(self.aps[-1].x - ap.x), (self.aps[-1].y - ap.y)])
             a = np.vstack([a, a_line])
             df = float(ap.df['<Est. Range(m)>'][pseudo_range_index])
-            b_line = np.array([(ap.df['<Est. Range(m)>'][pseudo_range_index] ** 2 -
-                                self.aps[-1].df['<Est. Range(m)>'][pseudo_range_index] ** 2 +
+            b_line = np.array([((ap.df['<Est. Range(m)>'][pseudo_range_index]*1000) ** 2 -
+                                (self.aps[-1].df['<Est. Range(m)>'][pseudo_range_index]*1000) ** 2 +
                                 self.aps[-1].x ** 2 +
                                 self.aps[-1].y ** 2 -
                                 ap.x ** 2 -

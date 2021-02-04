@@ -72,9 +72,9 @@ def main(file_path):
 
 if __name__ == "__main__":
     # input all file paths in a list
-    main(["JanDataTrialMock/AP_1/*.csv",
-          "JanDataTrialMock/AP_2/*.csv",
-          "JanDataTrialMock/AP_3/*.csv",
-          "JanDataTrialMock/AP_4/*.csv",
-          "JanDataTrialMock/AP_5/*.csv",
-          "JanDataTrialMock/AP_6/*.csv"])
+    main(["JanDataTrial3/AP_1/*.csv",
+          "JanDataTrial3/AP_2/*.csv",
+          "JanDataTrial3/AP_3/*.csv",
+          "JanDataTrial3/AP_4/*.csv",
+          "JanDataTrial3/AP_5/*.csv",
+          "JanDataTrial3/AP_6/*.csv"])
