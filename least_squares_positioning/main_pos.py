@@ -56,22 +56,25 @@ def main(file_path):
         data_store.aps[n].df, data_store.aps[n].data_list, data_store.aps[n].data_list_df = \
             dataframe_maker(file, ap_params[n][0])
 
-    for ap in data_store.aps:
-        print(ap.df)
+    # for ap in data_store.aps:
+    #     print(ap.df)
 
     data_store.ls_over_df_length_3d()
     # show distances
+    # print(data_store.ls_per_epoch_3d(3))
+
+
     for ap in data_store.aps:
         print(ap.name + " real distance to device: " + str(ap.distance_to_device))
 
     print("Device position: " + "\nx: " + str(data_store.device.x) + "\ny: " + str(data_store.device.y))
-
+    # print(data_store.position)
 
 if __name__ == "__main__":
     # input all file paths in a list
-    main(["JanDataTrial3/AP_1/*.csv",
-          "JanDataTrial3/AP_2/*.csv",
-          "JanDataTrial3/AP_3/*.csv",
-          "JanDataTrial3/AP_4/*.csv",
-          "JanDataTrial3/AP_5/*.csv",
-          "JanDataTrial3/AP_6/*.csv"])
+    main(["JanDataTrialMock/AP_1/*.csv",
+          "JanDataTrialMock/AP_2/*.csv",
+          "JanDataTrialMock/AP_3/*.csv",
+          "JanDataTrialMock/AP_4/*.csv",
+          "JanDataTrialMock/AP_5/*.csv",
+          "JanDataTrialMock/AP_6/*.csv"])

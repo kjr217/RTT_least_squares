@@ -2,6 +2,8 @@ import pandas as pd
 import numpy as np
 import math
 
+from sklearn.cluster import DBSCAN
+
 
 class DeviceHolder:
     """
@@ -42,6 +44,7 @@ class LSProcessor:
     self.aps - list of aps needs to be consist of lists with: [AP name, x, y]
     self.device - mobile device
     self.name - trial designation
+    self.position - array containing calculated position from ls_over_df_length, presents empty array if not run.
 
     :methods:
     determine_distances - calculates the distance between the mobile device and the APs, then sets this to
@@ -68,6 +71,7 @@ class LSProcessor:
             ap_list.append(DeviceHolder(ap))
         self.aps = ap_list
         self.device = DeviceHolder(device)
+        self.position = []
 
     def determine_distances(self):
         for ap in self.aps:
@@ -94,6 +98,7 @@ class LSProcessor:
         df_len = min(df_length_list)
         for n in range(0, df_len):
             coords = self.ls_per_epoch_3d(n)
+            self.position.append(coords)
             print("Position at epoch " + str(n) +
                   ":\n" + "x: " + str(coords[0]) +
                   "\ny: " + str(coords[1]) +
@@ -133,11 +138,11 @@ class LSProcessor:
         self.determine_distances()
         a = np.array([0, 0, 0])
         b = np.array([0])
-        for ap in reversed(self.aps[:-1]):
+        for ap in self.aps[:-1]:
             a_line = np.array([(self.aps[-1].x - ap.x), (self.aps[-1].y - ap.y), (self.aps[-1].z - ap.z)])
             a = np.vstack([a, a_line])
-            b_line = np.array([(ap.df['<Est. Range(m)>'][pseudo_range_index] ** 2 -
-                                self.aps[-1].df['<Est. Range(m)>'][pseudo_range_index] ** 2 +
+            b_line = np.array([((ap.df['<Est. Range(m)>'][pseudo_range_index]*1000) ** 2 -
+                                (self.aps[-1].df['<Est. Range(m)>'][pseudo_range_index]*1000) ** 2 +
                                 self.aps[-1].x ** 2 +
                                 self.aps[-1].y ** 2 +
                                 self.aps[-1].z ** 2 -
@@ -149,16 +154,19 @@ class LSProcessor:
         a = np.delete(a, 0, axis=0)
         b = np.delete(b, 0, axis=0)
         a_trans = np.transpose(a)
-        a_trans_x_a = np.dot(a_trans, a)
+        a_trans_x_a = np.matmul(a_trans, a)
         try:
             a_trans_x_a_inv = np.linalg.inv(a_trans_x_a)
         except np.linalg.LinAlgError:
             print("Determinant of matrix is 0 so has no inverse, pushing to pseudo inverse to force an inverse output")
             a_trans_x_a_inv = np.linalg.pinv(a_trans_x_a)
-        a_other = np.dot(a_trans, b)
-        x_plus = np.dot(a_trans_x_a_inv, a_other)
+        a_other = np.matmul(a_trans, b)
+        x_plus = np.matmul(a_trans_x_a_inv, a_other)
 
         return x_plus
+
+
+
 
     # def ls_per_epoch(self, pseudo_range_index, rea):
     #     self.determine_distances()
