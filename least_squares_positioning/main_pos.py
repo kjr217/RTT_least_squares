@@ -60,6 +60,8 @@ def main(file_path):
     #     print(ap.df)
 
     data_store.ls_over_df_length_3d()
+    # data_store.plot_3d()
+    data_store.dbscan_2d(0.2, 10)
     # show distances
     # print(data_store.ls_per_epoch_3d(3))
 
